@@ -9,14 +9,17 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.internet.MimeMessage;
 
 import org.hornetq.utils.json.JSONObject;
+import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 import org.training.utilities.ConfigUtils;
 import org.training.utilities.GmailUtils;
@@ -31,8 +34,8 @@ import com.google.api.services.gmail.model.Message;
 import lombok.Getter;
 import lombok.Setter;
 
-@Service
-public class FillDoodleTask {
+@Component
+public class FillDoodleTask implements DisposableBean {
 
 	final static org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(FillDoodleTask.class);
 
@@ -56,6 +59,7 @@ public class FillDoodleTask {
 	private final MailUtils mailUtils;
 
 	private final ConfigUtils configUtils;
+	
 
 	@Autowired
 	public FillDoodleTask(final GmailUtils gmailUtils, final HttpUtils httpUtils, final MailUtils mailUtils,
@@ -64,7 +68,17 @@ public class FillDoodleTask {
 		this.httpUtils = httpUtils;
 		this.mailUtils = mailUtils;
 		this.configUtils = configUtils;
+		try {
+			gmailUtils.sendMessage("doodle task initialized",null);
+		} catch (MessagingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
+	
 
 	@Scheduled(fixedDelay = 5000)
 	public void FillFutsalDoodle() throws Exception {
@@ -177,6 +191,19 @@ public class FillDoodleTask {
 			}
 		}
 		logger.debug("End of doodle insertion");
+	}
+
+	@Override
+	public void destroy() throws Exception {
+		try {
+			gmailUtils.sendMessage("doodle task destroyed",null);
+		} catch (MessagingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }
