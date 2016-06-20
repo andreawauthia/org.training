@@ -1,0 +1,9 @@
+org\training\utilities\GmailUtils.class
+org\training\webservices\DoodleInfos.class
+org\training\task\DoodleTaskActivator.class
+org\training\utilities\MailUtils.class
+org\training\utilities\HttpUtils.class
+org\training\runnable\FustalCheatApplication.class
+org\training\utilities\ConfigUtils.class
+org\training\task\FillDoodleTask.class
+org\training\webservices\ConfigurePlayers.class
