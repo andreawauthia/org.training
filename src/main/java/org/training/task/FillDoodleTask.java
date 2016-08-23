@@ -9,18 +9,20 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.internet.MimeMessage;
+import javax.xml.crypto.dsig.spec.HMACParameterSpec;
 
 import org.hornetq.utils.json.JSONObject;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
+import org.training.runnable.FustalCheatApplication;
 import org.training.utilities.ConfigUtils;
 import org.training.utilities.GmailUtils;
 import org.training.utilities.HttpUtils;
@@ -35,6 +37,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Component
+@DependsOn("gmailUtils")
 public class FillDoodleTask implements DisposableBean {
 
 	final static org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(FillDoodleTask.class);
@@ -46,6 +49,15 @@ public class FillDoodleTask implements DisposableBean {
 	@PostConstruct
 	private void init() {
 		setLock(new ReentrantLock());
+		try {
+			gmailUtils.sendMessage("doodle task initialized",null);
+		} catch (MessagingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Getter
@@ -68,15 +80,6 @@ public class FillDoodleTask implements DisposableBean {
 		this.httpUtils = httpUtils;
 		this.mailUtils = mailUtils;
 		this.configUtils = configUtils;
-		try {
-			gmailUtils.sendMessage("doodle task initialized",null);
-		} catch (MessagingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 	
 

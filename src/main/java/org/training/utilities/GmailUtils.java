@@ -1,6 +1,7 @@
 package org.training.utilities;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -73,7 +74,7 @@ public class GmailUtils {
 		try {
 			JSON_FACTORY = JacksonFactory.getDefaultInstance();
 			APPLICATION_NAME = "Futsal Cheat";
-			DATA_STORE_DIR = new java.io.File(environment.getProperty("credentials.path"));
+			DATA_STORE_DIR = new File(getClass().getResource("/config/gmail-java-fustalcheat.json").getFile());
 			SCOPES = Arrays.asList(new String[] { GmailScopes.GMAIL_INSERT, GmailScopes.GMAIL_LABELS,
 					GmailScopes.MAIL_GOOGLE_COM, GmailScopes.GMAIL_MODIFY, GmailScopes.GMAIL_READONLY });
 

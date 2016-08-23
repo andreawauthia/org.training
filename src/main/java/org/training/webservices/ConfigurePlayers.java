@@ -25,7 +25,14 @@ public class ConfigurePlayers {
 	}
 	
 	@RequestMapping(value = "/add/{fullname}/{value}", method = RequestMethod.GET)
-	public void AddPlayer(@PathVariable String fullname, @PathVariable String value){
+	public @ResponseBody String AddPlayer(@PathVariable String fullname, @PathVariable String value){
 		configUtils.modifyPlayer(fullname, value);
+		return ReadPlayerConfiguration();
+	}
+	
+	@RequestMapping(value = "/remove/{fullname}", method = RequestMethod.GET)
+	public @ResponseBody String rmPlayer(@PathVariable String fullname){
+		configUtils.removePlayer(fullname);
+		return ReadPlayerConfiguration();
 	}
 }

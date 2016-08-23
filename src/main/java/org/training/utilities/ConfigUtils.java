@@ -82,7 +82,25 @@ public class ConfigUtils {
 		try {
 			Properties prop = getPlayerProperties();
 			String properyName = playerPrefix + fullname;
+			if ("true".equals(value)||"yes".equals(value)){
+				value = "oui";
+			}
+			if ("false".equals(value)||"false".equals(value)){
+				value = "oui";
+			}
 			prop.setProperty(properyName, value);
+			Store(prop);
+		} catch (IOException e) {
+			logger.error(e.getMessage());
+		}
+	}
+	
+	public void removePlayer(String fullname) {
+		try {
+			Properties prop = getPlayerProperties();
+			String properyName = playerPrefix + fullname;
+			
+			prop.remove(properyName);
 			Store(prop);
 		} catch (IOException e) {
 			logger.error(e.getMessage());
