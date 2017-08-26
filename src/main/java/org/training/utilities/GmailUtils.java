@@ -120,6 +120,7 @@ public class GmailUtils {
 					clientSecrets, SCOPES).setDataStoreFactory(DATA_STORE_FACTORY).setAccessType("offline").build();
 			Credential credential = new AuthorizationCodeInstalledApp(flow, new LocalServerReceiver())
 					.authorize("user");
+			credential.refreshToken();
 
 			logger.debug("Credentials saved to " + DATA_STORE_DIR.getAbsolutePath());
 			return credential;

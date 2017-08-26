@@ -88,7 +88,7 @@ public class FillDoodleTask implements DisposableBean {
 		if (isEnabled()) {
 			lock.lock();
 			try {
-				logger.info("Begin");
+				
 				String[] participantsName = configUtils.getAllAvailablePlayer();
 				String user = "me";
 				String mailQuery = "in:inbox is:unread subject:Futsal";
@@ -134,9 +134,9 @@ public class FillDoodleTask implements DisposableBean {
 							}
 						}
 					}
-					logger.info("No message found1");
+					
 				} else {
-					logger.info("No message found2");
+					
 				}
 			} finally {
 				lock.unlock();
